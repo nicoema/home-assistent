@@ -1,0 +1,30 @@
+###############################################################################
+#   @author         :   Nico Emanuelsson
+#   @date           :   2022-01-25
+# System Sensor.
+###############################################################################
+# This will give you a state on Home Assistant sensors.
+# This is mainly for HA Blue (but work on Raspberry-pi. Some sensors is missing).
+###############################################################################
+
+## Sensor for Home Assistant Blue ############################
+- platform: systemmonitor
+  resources:
+  - type: processor_use
+  - type: disk_use_percent
+    arg: "/"
+  - type: disk_free
+    arg: "/"
+  - type: memory_use_percent
+  - type: network_in
+    arg: eth0
+  - type: throughput_network_in
+    arg: eth0
+  - type: network_out
+    arg: eth0
+  - type: throughput_network_out
+    arg: eth0
+  - type: processor_temperature
+  - type: last_boot
+########################################################
+# go's in Config.
