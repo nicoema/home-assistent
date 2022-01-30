@@ -1,0 +1,63 @@
+#-----------Auora status-----------------------------
+
+aurora_918_status:
+  sequence:
+  - service: notify.alexa_media_last_called
+    data:
+      message: Aurora is currently running at {{states('sensor.aurora_average_disk_temp')
+        }} degrees celsius. The Volume Usage is{{states('sensor.aurora_volume_used')}}
+        Procent. Disk One is {{states('sensor.aurora_status')}}. Disk Two is {{states('sensor.aurora_status_2')}}.
+        Distk Three is {{states('sensor.aurora_status_3')}}. Disk Foure is {{states('sensor.aurora_status_4')}}.
+        The machine is {{states('sensor.aurora_status_5')}}.
+        End Of Report.
+      data:
+        type: tts
+        target: alexa_media_echo_show
+  mode: single
+  alias: Aurora 918 Status
+# Home Assistant Status-----------------------------------------------
+home_assistant_blue:
+  sequence:
+  - service: notify.alexa_media_last_called
+    data:
+      message: "Blue is currently running Operating system {{states('sensor.home_assistant_operating_system_version')}}...\
+        \ There is {% if is_state('binary_sensor.home_assistant_operating_system_update_available',\
+        \ 'off') %}\n        NO Update Available for Blue\n{% else %}\n        Available\
+        \ Update for Blue\n{% endif %}... Blue is useing {{states('sensor.disk_use_percent')}}\
+        \ procent disk space... And {{states('sensor.disk_free')}} procent is free\
+        \ space... The temperature is {{states('sensor.processor_temperature')}} degrees\
+        \ celsius... End Of Report."
+      data:
+        type: tts
+  mode: single
+  alias: Home Assistant Status
+# ------------------------------------------------------------
+plex_status:
+  sequence:
+  - service: notify.alexa_media_last_called
+    data:
+      message: Plex currently contains {{states('sensor.aurora_ds918_library_movies')}}
+        Movies. And {{states('sensor.aurora_ds918_library_tv_shows')}} TV-Episodes.
+        Right now I can not diffirense betwin seasons and perticular shows.   You
+        have to write better code. I meen finish up writing my parameters.  sir.
+        End Of Report.
+      data:
+        type: tts
+  mode: single
+  alias: Plex Status
+# -----Sensor Status-------------------------------------------
+sensor_status:
+  sequence:
+  - service: notify.alexa_media_last_called
+    data:
+      message: Door sensor power is {{states('sensor.lumi_lumi_sensor_magnet_aq2_power')}}
+        procent. Halway tenprature sensor power is {{states('sensor.lumi_lumi_weather_power')}}
+        procent. Kitchen Window sensor power is {{states('sensor.lumi_lumi_sensor_magnet_aq2_f8ab8906_power')}}
+        procent. Kitchen motion sensor power is {{states('sensor.lumi_lumi_sensor_motion_aq2_power')}}
+        procent. Bathroom motion sensor power is {{states('sensor.lumi_lumi_sensor_motion_aq2_6a159007_power')}}
+        procent. Studio porch sensor power is {{states('sensor.lumi_lumi_sensor_magnet_aq2_f52d9007_power')}}
+        procent. End Of Report.
+      data:
+        type: tts
+  mode: single
+  alias: Sensor Status
