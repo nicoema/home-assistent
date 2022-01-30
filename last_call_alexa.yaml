@@ -1,0 +1,22 @@
+###############################################################################
+#   @author         :   Nico Emanuelsson
+#   @date           :   2022-01-30
+# Sensor for last echo call on Alexa.
+###############################################################################
+# This will give you a state on Last Called Alexa divice.
+# Perfect for "alexa actionable notification Script.
+################################
+
+
+- platform: template
+  sensors:
+    last_alexa:
+      entity_id:
+        - media_player.echo_show
+        - media_player.bedroom_echo_dot
+        - media_player.studio_echo_dot
+      value_template: >
+        {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+
+#----------------------------------------------------------------------------------------------------
+ '{{ states(''sensor.last_alexa'') }}' ## <---Template Adress for this sensor##
