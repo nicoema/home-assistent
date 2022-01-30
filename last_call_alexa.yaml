@@ -20,3 +20,19 @@
 
 #----------------------------------------------------------------------------------------------------
  '{{ states(''sensor.last_alexa'') }}' ## <---Template Adress for this sensor##
+#----------------------------------------------------------------------------------------------------
+##########################################################################
+## Here is an exemple.
+#########################################################################
+- id: '1643481594727'
+  alias: Dressing room test
+  description: Alexa asks me when dressing room have been on for 1h
+  trigger: []
+  condition: []
+  action:
+  - service: script.activate_alexa_actionable_notification
+    data:
+      text: is ther something els sir?
+      event_id: actionable_notification_turne_off_dressing_room
+      alexa_device: '{{ states(''sensor.last_alexa'') }}'
+  mode: single
