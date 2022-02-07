@@ -1,0 +1,31 @@
+###############################################################################
+#   @author         :   Nico Emanuelsson
+#   @date           :   2022-02-05
+# Sensor for Aguara T1 power over watch.
+###############################################################################
+# This will give you a state on Washer, dryer or Dishwasher divice.
+# If the maskin is Off, Standby or Washing.
+# You can adjust name off State or Power drain.
+# (  == 0  ) is 0 Power. ( <= 2  )is 0 to 2 watt
+# The icon will change on State.
+###############################################################################
+
+- platform: template
+  sensors:
+    washer_maskin:
+      value_template: >
+        {% if states("sensor.lumi_electrical_measurement")|float == 0  %}
+          Off
+        {% elif states("sensor.lumi_electrical_measurement")|float <= 2 %}
+          Standby
+        {% else %}
+          Washing
+        {% endif %}
+      icon_template: >-
+        {% if states("sensor.lumi_electrical_measurement")|float == 0  %}
+        mdi:washing-machine-off
+        {% elif states("sensor.lumi_electrical_measurement")|float <= 2  %}
+        mdi:washing-machine-alert
+        {% else %}
+        mdi:washing-machine
+        {% endif %}
