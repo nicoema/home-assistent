@@ -1,0 +1,2 @@
+>
+{{ states.input_text.info_text.state }}
