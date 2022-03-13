@@ -1,5 +1,5 @@
 >
-# Daily Briefing #}
+# Daily Briefing #
 {%- macro getGreeting() -%}
     {% if now().strftime('%H')|int < 12 %}
       Good morning.
