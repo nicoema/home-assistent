@@ -1,0 +1,47 @@
+# Use this platform to controll britnes
+# use groups to mix switches and light
+- platform: group
+  name: Dressing Room L
+  entities:
+    - light.dressing_room_1_2
+    - light.dressing_room_2_2
+- platform: group
+  name: Studio Lights
+  entities:
+    - light.studio_sealing_2
+    - light.studio_table_lamp_2
+- platform: group
+  name: Hallway L
+  entities:
+    - light.door_light_2
+    - light.hallway_2_2
+- platform: group
+  name: Bedside Lamp L
+  entities:
+    - light.bed_light_color_2
+    - light.bed_light_white_2
+- platform: group
+  name: Info lights
+  entities:
+    - light.desktop_lamp
+    - light.kitchen_lamp_color
+    - light.bed_light_color_2
+- platform: group
+  name: Alert Lights
+  entities:
+    - light.bed_light_color_2
+    - light.hallway_2_2
+    - light.kitchen_sink_2
+    - light.kitchen_lamp_color
+    - light.desktop_lamp
+- platform: group
+  name: Trespass Light
+  entities:
+        - light.dressing_room_1_2
+        - light.dressing_room_2_2
+        - light.studio_sealing_2
+        - light.studio_table_lamp_2
+        - light.door_light_2
+        - light.kitchen_sealing_white
+        - light.bedroom_sealing_white_2
+        - light.front_door_outside_2

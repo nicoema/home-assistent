@@ -1,0 +1,47 @@
+# If you wana use britnes controll add the light in lights
+
+Echos:
+  - media_player.echo_show
+  - media_player.studio_echo_dot
+  - media_player.bedroom_echo_dot
+kitchen:
+  - switch.fan_kitchen
+  - light.kitchen_sink_2
+Bathroom:
+  - light.lumi_lumi_switch_l2aeu1_on_off
+  - light.lumi_lumi_switch_l2aeu1_on_off_2
+vacation lights:
+  - light.bed_light_color_2
+  - light.bed_light_white_2
+  - switch.stairs
+  - light.hallway_2_2
+  - switch.fan_kitchen
+  - light.kitchen_sink_2
+  - light.kitchen_lamp_color
+  - light.studio_table_lamp_2
+  - light.studio_sealing_2
+Work Lights:
+  - light.bed_light_white_2
+  - switch.stairs
+  - switch.fan_kitchen
+  - light.studio_table_lamp_2
+Motion Sensors:
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_6a159007_ias_zone
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_ias_zone
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_439d8e07_ias_zone
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_809f8e07_ias_zone
+Motion Sensors Alarm:
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_ias_zone
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_439d8e07_ias_zone
+  - binary_sensor.lumi_lumi_sensor_motion_aq2_809f8e07_ias_zone
+Magnet Sensors Alarm:
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_f52d9007_on_off
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_f8ab8906_on_off
+Magnet Sensors All:
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_f52d9007_on_off
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_f8ab8906_on_off
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_d41dd107_on_off
+  - binary_sensor.lumi_lumi_sensor_magnet_aq2_on_off
+Peoples:
+  - person.nico
+  - input_boolean.guests_on
