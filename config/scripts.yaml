@@ -1167,5 +1167,5 @@ briefing:
     data:
       data:
         type: tts
-      message: !include ../templates/speech/test_text.yaml
+      message: !include /templates/speech/test_text.yaml
   mode: single
