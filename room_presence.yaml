@@ -1,0 +1,46 @@
+###############################################################################
+#   @author         :   Nico Emanuelsson
+#   @date           :   2022-04-17
+# Sensor for Room Precence call on Alexa.
+###############################################################################
+# This will give you an input to use on Echos divice.
+# # inputs the "Room Precence" Sensor echos states
+'{{ states(''sensor.room_presence'') }}'
+# This will check "last Called" on Echos, youre Motions sensors
+# and if the Tv is on. Then send the message to the right Echo.
+###############################################################################
+################## Room Presence ############################
+- platform: template
+  sensors:
+    room_presence:
+      friendly_name: "Room Presence"
+      value_template: >-
+        {%- set last_alexa_called_seconds = (now() - as_local(states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='last_updated') | first)).seconds -%}
+        {%- if last_alexa_called_seconds <= 60 %}
+          {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+        {% elif expand('group.motion_sensors') | selectattr('state', 'eq', 'on') | list | count >= 1 %}
+          {% set sensor = expand('group.motion_sensors') | selectattr('state', 'eq', 'on') | sort(attribute='last_changed') | last %}
+              {% if sensor.name == 'Bedroom Motion' %}
+                media_player.bedroom_echo_dot
+              {% elif sensor.name in ('Bathroom Motion','Kitchen Motion' ) %}
+                media_player.echo_show
+              {% elif sensor.name in ('Studio Motion' ) %}
+                media_player.studio_echo_dot
+              {% else %}
+                media_player.echo_show
+              {%- endif %}
+        {% elif is_state('switch.tv_table', 'on') %}
+          media_player.bedroom_echo_dot
+        {% else %}
+          {{ states('input_text.echo_sensor') }}
+        {% endif %}
+      icon_template:
+        mdi:motion-sensor
+##########################################################
+# Here is an example message:
+service: notify.alexa_media
+data:
+  message: 'Youre Message to speak'
+  data:
+    type: tts
+  target: '{{ states(''sensor.room_presence'') }}'
