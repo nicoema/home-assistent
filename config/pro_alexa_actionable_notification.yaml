@@ -1,0 +1,73 @@
+## In put boolean
+input_text:
+  alexa_actionable_notification:
+    name: Alexa Actionable Notification Holder
+    max: 255
+    initial: '{"text": "This is a test of the alexa actions  PRO custom skill. Did it work?", "event": "actionable.skill.test"}'
+## script
+script:
+  activate_alexa_actionable_notification:
+    description: PRO Activates an actionable Notification on a specific echo device
+    fields:
+      text:
+        description: The text you would like to speak.
+      event_id:
+        description: Correlation ID for event responses
+      alexa_device:
+        description: Alexa device you want to trigger. (studio, hallway, kitchen, bedroom, bathroom, all, (sensor or room_presence))
+    sequence:
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.alexa_actionable_notification
+        value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
+    - service: media_player.play_media
+      data_template:
+        entity_id: |
+          {% if alexa_device in ['hallway','media_player.echo_show','kitchen'] %}
+            media_player.echo_show
+          {% elif alexa_device in ['bedroom','media_player.bedroom_echo_dot'] %}
+            media_player.bedroom_echo_dot
+          {% elif alexa_device in ['studio','media_player.studio_echo_dot'] %}
+            media_player.studio_echo_dot
+          {% elif alexa_device in ['bathroom','media_player.bathroom_echo_dot'] %}
+            media_player.bathroom_echo_dot
+          {% elif alexa_device in ['all'] %}
+            group.echos
+          {% elif alexa_device in ['sensor','room_presence'] %}
+            {{ states('sensor.room_presence') }}
+          {% else %}
+            media_player.echo_show
+          {% endif %}
+        media_content_type: skill
+        media_content_id: !secret alexa_actionable_skill1
+
+
+######### EXAMPLE DOWN UNDER  ##################################################
+# service: script.activate_alexa_actionable_notification
+# data:
+#   text: The bedroom is still On! Do you whant me to turne it OFF?
+#   event_id: actionable_notification_turne_off
+#   alexa_device: sensor
+
+##############################################################
+    # Save your message for recall
+    # Save your message for recall
+    - service: mqtt.publish
+      data_template:
+        topic: 'house/alexa/lastmsg'
+        payload: '{{ text }}'
+    # Save time of last message
+    - service: mqtt.publish
+      data_template:
+        topic: 'house/alexa/msgtime'
+        payload: >
+          {{ now().strftime("%H") }}:{{ now().strftime("%M") }}
+        retain: true
+
+    # Save location
+    - service: mqtt.publish
+      data_template:
+        topic: 'house/alexa/lastloc'
+        payload: '{{ alexa_device }}'
+
+        retain: true
