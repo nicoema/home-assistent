@@ -1,0 +1,114 @@
+###################################################################
+#           Candele script
+#       Just put this in youre Packages. Subscript: speech_engine_emo2 and alexa_actionable_notification (pro)
+#       Nico Emanuelsson
+########################################################################
+input_boolean:
+  live_candles:
+    name: Live Candles
+    icon:
+      mdi:candle
+timer:
+  candles_timer:
+    name: Candles Timer
+    duration: "00:55:00"
+    restore: true
+    icon:
+      mdi:candle
+script:
+  live_candles_on:
+    alias: "Live Candles On"
+    sequence:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.live_candles
+    - service: timer.start
+      target:
+        entity_id: timer.candles_timer
+    - service: script.speech_engine_emo2
+      data:
+        message: >-
+              {{ [
+                  "I have just started a Timer for the Candles.. {{ state_attr('timer.candles_timer','duration').split (':') [1] }} minuts...",
+                  "I will remind you about the Candles in {{ state_attr('timer.candles_timer','duration').split (':') [1] }} minuts...",
+                  "Timer is started... Getting back to you in {{ state_attr('timer.candles_timer','duration').split (':') [1] }} minuts.. About the Candles...",
+                ] | random +[
+                  "It will give the apartment a nice mode...",
+                  "I hope it is scented candles.. It started to smell closed off...",
+                  "Don't leave them unattended..",
+                ] | random }}
+        who: sensor
+        effect: normal
+  live_candles_off:
+    alias: "Live Candles Off"
+    sequence:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.live_candles
+    - service: timer.cancel
+      target:
+        entity_id: timer.candles_timer
+    - service: script.speech_engine_emo2
+      data:
+        message: >-
+              {{ [
+                  "The timer is Stopped... Make Sure all of the candles are put out...",
+                  "Stopped the reminder...Make sure it is prorely done..",
+                  "Perfect... Make sure all candles is out..",
+                ] | random }}
+        who: sensor
+        effect: normal
+automation:
+  - id: candle_trigger
+    alias: Candle Trigger
+    trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.candles_timer
+      id: Timer Candles
+    - platform: event
+      event_type: alexa_actionable_notification
+      event_data:
+        event_id: actionable_notification_live_candles
+        event_response_type: ResponseYes
+      id: 'yes'
+    - platform: event
+      event_type: alexa_actionable_notification
+      event_data:
+        event_id: actionable_notification_live_candles
+        event_response_type: ResponseNo
+      id: 'no'
+    condition: []
+    action:
+    - choose:
+      - conditions:
+        - condition: trigger
+          id: Timer Candles
+        sequence:
+        - service: script.activate_alexa_actionable_notification
+          data:
+            text: "The candles have been on for {{ state_attr('timer.candles_timer','duration').split (':') [1] }} minuts.. Do you want to stop timer.."
+            event_id: actionable_notification_live_candles
+            alexa_device: sensor
+        - service: timer.start
+          data: {}
+          target:
+            entity_id: timer.candles_timer
+      - conditions:
+        - condition: trigger
+          id: 'yes'
+        sequence:
+        - service: script.live_candles_off
+      - conditions:
+        - condition: trigger
+          id: 'no'
+        sequence:
+        - service: script.speech_engine_emo2
+          data:
+            message: "{{ [\n  \"What was I thinking. You know best Sir\",\n  \"Ok. Just
+              tell me when to stop it!\",\n  \"As you wish\",\n  \"If you insist\",\n
+              \ \"No Problem\",\n  \"OK. Do not blame me later!\",\n] | random }}\n"
+            who: sensor
+            effect: normal
+      default: []
